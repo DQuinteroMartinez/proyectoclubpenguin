@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -40,6 +41,18 @@ public class ControlExcepciones {
         ex.getBindingResult().getFieldErrors()
                 .forEach(error -> errores.put(error.getField(), error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errores);
+    }
+    /**
+     * Responde cuando el usuario o la contraseña son incorrectos durante el login.
+     *
+     * @param ex excepción lanzada por Spring Security
+     * @return una respuesta 401 (no autorizado) con un mensaje general
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> manejarCredencialesInvalidas(BadCredentialsException ex) {
+        Map<String, String> cuerpo = new HashMap<>();
+        cuerpo.put("error", "Usuario o contraseña incorrectos");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(cuerpo);
     }
 
 }
