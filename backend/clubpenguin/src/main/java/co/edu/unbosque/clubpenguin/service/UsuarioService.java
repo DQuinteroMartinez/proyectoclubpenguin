@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 
 import co.edu.unbosque.clubpenguin.dto.RegistroDto;
 import co.edu.unbosque.clubpenguin.dto.UsuarioDto;
-import co.edu.unbosque.clubpenguin.exeption.UsuarioYaExisteException;
+import co.edu.unbosque.clubpenguin.exception.RecursoNoEncontradoException;
+import co.edu.unbosque.clubpenguin.exception.UsuarioYaExisteException;
 import co.edu.unbosque.clubpenguin.model.Rol;
 import co.edu.unbosque.clubpenguin.model.Usuario;
 import co.edu.unbosque.clubpenguin.repository.RolRepository;
 import co.edu.unbosque.clubpenguin.repository.UsuarioRepository;
-
 /**
  * Contiene la lógica de negocio relacionada con los usuarios:
  * registrar cuentas nuevas y consultar el listado de usuarios.
@@ -101,5 +101,38 @@ public class UsuarioService {
         dto.setFechaRegistro(usuario.getFechaRegistro());
         return dto;
     }
+    
+    /**
+     * Cambia el rol de un usuario. Solo debe usarlo un administrador.
+     *
+     * @param id identificador del usuario al que se le cambiará el rol
+     * @param nombreRol nombre del nuevo rol (ADMIN o USUARIO)
+     * @return los datos del usuario con su nuevo rol
+     * @throws RecursoNoEncontradoException si el usuario o el rol no existen
+     */
+    public UsuarioDto cambiarRol(Long id, String nombreRol) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        Rol rol = rolRepository.findByNombre(nombreRol)
+                .orElseThrow(() -> new RecursoNoEncontradoException("El rol no existe"));
+
+        usuario.setRol(rol);
+        return convertirADto(usuarioRepository.save(usuario));
+    }
+
+    /**
+     * Elimina la cuenta de un usuario. Solo debe usarlo un administrador.
+     *
+     * @param id identificador del usuario que se eliminará
+     * @throws RecursoNoEncontradoException si el usuario no existe
+     */
+    public void eliminar(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new RecursoNoEncontradoException("Usuario no encontrado");
+        }
+        usuarioRepository.deleteById(id);
+    }
+    
 
 }
