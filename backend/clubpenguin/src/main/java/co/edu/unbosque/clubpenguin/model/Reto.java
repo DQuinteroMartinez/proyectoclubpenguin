@@ -1,0 +1,5 @@
+package co.edu.unbosque.clubpenguin.model;
+
+public class Reto {
+
+}
