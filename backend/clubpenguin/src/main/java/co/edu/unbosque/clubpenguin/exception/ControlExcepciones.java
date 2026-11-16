@@ -75,13 +75,27 @@ public class ControlExcepciones {
 	 * incorrectas o porque el servidor de correo no responde).
 	 *
 	 * @param ex excepción lanzada por el sistema de correo
-	 * @return una respuesta 502 (puerta de enlace incorrecta) con un mensaje general
+	 * @return una respuesta 502 (puerta de enlace incorrecta) con un mensaje
+	 *         general
 	 */
 	@ExceptionHandler(MailException.class)
 	public ResponseEntity<Map<String, String>> manejarErrorCorreo(MailException ex) {
 		Map<String, String> cuerpo = new HashMap<>();
 		cuerpo.put("error", "No se pudo enviar el correo");
 		return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(cuerpo);
+	}
+
+	/**
+	 * Responde cuando una operación no cumple las reglas del negocio.
+	 *
+	 * @param ex excepción lanzada por el service
+	 * @return una respuesta 400 (petición incorrecta) con el mensaje del error
+	 */
+	@ExceptionHandler(OperacionInvalidaException.class)
+	public ResponseEntity<Map<String, String>> manejarOperacionInvalida(OperacionInvalidaException ex) {
+		Map<String, String> cuerpo = new HashMap<>();
+		cuerpo.put("error", ex.getMessage());
+		return ResponseEntity.badRequest().body(cuerpo);
 	}
 
 }

@@ -18,6 +18,7 @@ import co.edu.unbosque.clubpenguin.model.Rol;
 import co.edu.unbosque.clubpenguin.model.Usuario;
 import co.edu.unbosque.clubpenguin.repository.RolRepository;
 import co.edu.unbosque.clubpenguin.repository.UsuarioRepository;
+import co.edu.unbosque.clubpenguin.repository.RetoRepository;
 
 /**
  * Contiene la lógica de negocio relacionada con los usuarios: registrar cuentas
@@ -36,6 +37,8 @@ public class UsuarioService {
 	private final PasswordEncoder passwordEncoder;
 	/** Repositorio para eliminar las partidas de un usuario. */
 	private final PartidaRepository partidaRepository;
+	/** Repositorio para eliminar los retos de un usuario. */
+	private final RetoRepository retoRepository;
 
 	/**
 	 * Crea el service. Spring entrega automáticamente cada dependencia.
@@ -46,10 +49,11 @@ public class UsuarioService {
 	 * @param partidaRepository repositorio de partidas
 	 */
 	public UsuarioService(UsuarioRepository usuarioRepository, RolRepository rolRepository,
-			PartidaRepository partidaRepository, PasswordEncoder passwordEncoder) {
+			PartidaRepository partidaRepository, RetoRepository retoRepository, PasswordEncoder passwordEncoder) {
 		this.usuarioRepository = usuarioRepository;
 		this.rolRepository = rolRepository;
 		this.partidaRepository = partidaRepository;
+		this.retoRepository = retoRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
 
@@ -129,8 +133,8 @@ public class UsuarioService {
 	}
 
 	/**
-	 * Elimina la cuenta de un usuario junto con todas sus partidas.
-     * Solo debe usarlo un administrador.
+	 * Elimina la cuenta de un usuario junto con todas sus partidas. Solo debe
+	 * usarlo un administrador.
 	 *
 	 * @param id identificador del usuario que se eliminará
 	 * @throws RecursoNoEncontradoException si el usuario no existe
@@ -139,6 +143,23 @@ public class UsuarioService {
 		if (!usuarioRepository.existsById(id)) {
 			throw new RecursoNoEncontradoException("Usuario no encontrado");
 		}
+		partidaRepository.deleteByUsuarioId(id);
+		usuarioRepository.deleteById(id);
+	}
+
+	/**
+	 * Elimina la cuenta de un usuario junto con sus partidas y sus retos. Solo debe
+	 * usarlo un administrador.
+	 *
+	 * @param id identificador del usuario que se eliminará
+	 * @throws RecursoNoEncontradoException si el usuario no existe
+	 */
+	@Transactional
+	public void eliminar(Long id) {
+		if (!usuarioRepository.existsById(id)) {
+			throw new RecursoNoEncontradoException("Usuario no encontrado");
+		}
+		retoRepository.deleteByRetadorIdOrRetadoId(id, id);
 		partidaRepository.deleteByUsuarioId(id);
 		usuarioRepository.deleteById(id);
 	}
