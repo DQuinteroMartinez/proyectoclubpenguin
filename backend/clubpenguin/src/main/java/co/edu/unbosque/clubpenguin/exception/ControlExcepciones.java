@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.mail.MailException;
 
 /**
  * Atrapa las excepciones lanzadas en cualquier controller y las convierte en
@@ -67,6 +68,20 @@ public class ControlExcepciones {
 		Map<String, String> cuerpo = new HashMap<>();
 		cuerpo.put("error", ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(cuerpo);
+	}
+
+	/**
+	 * Responde cuando no se pudo enviar un correo (por ejemplo, por credenciales
+	 * incorrectas o porque el servidor de correo no responde).
+	 *
+	 * @param ex excepción lanzada por el sistema de correo
+	 * @return una respuesta 502 (puerta de enlace incorrecta) con un mensaje general
+	 */
+	@ExceptionHandler(MailException.class)
+	public ResponseEntity<Map<String, String>> manejarErrorCorreo(MailException ex) {
+		Map<String, String> cuerpo = new HashMap<>();
+		cuerpo.put("error", "No se pudo enviar el correo");
+		return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(cuerpo);
 	}
 
 }
