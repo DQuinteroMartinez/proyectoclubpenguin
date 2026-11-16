@@ -21,6 +21,14 @@ public interface PartidaRepository extends JpaRepository<Partida, Long> {
 	List<Partida> findByUsuarioNombreUsuarioOrderByFechaDesc(String nombreUsuario);
 
 	/**
+	 * Obtiene todas las partidas jugadas en un minijuego.
+	 *
+	 * @param minijuegoId identificador del minijuego
+	 * @return la lista de partidas de ese minijuego
+	 */
+	List<Partida> findByMinijuegoId(Long minijuegoId);
+
+	/**
 	 * Elimina todas las partidas de un usuario.
 	 *
 	 * @param usuarioId identificador del usuario cuyas partidas se eliminarán
