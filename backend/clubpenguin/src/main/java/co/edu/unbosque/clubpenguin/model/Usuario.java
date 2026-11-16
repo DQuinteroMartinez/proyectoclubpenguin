@@ -12,150 +12,198 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
- * Representa a un usuario registrado en el juego.
- * Cada objeto de esta clase corresponde a una fila de la tabla "usuarios".
+ * Representa a un usuario registrado en el juego. Cada objeto de esta clase
+ * corresponde a una fila de la tabla "usuarios".
  */
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
-    /** Identificador único del usuario, generado automáticamente por la base de datos. */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	/**
+	 * Identificador único del usuario, generado automáticamente por la base de
+	 * datos.
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    /** Nombre con el que el usuario aparece en el juego. No puede repetirse. */
-    @Column(nullable = false, unique = true)
-    private String nombreUsuario;
+	/** Nombre con el que el usuario aparece en el juego. No puede repetirse. */
+	@Column(nullable = false, unique = true)
+	private String nombreUsuario;
 
-    /** Correo electrónico del usuario. No puede repetirse. */
-    @Column(nullable = false, unique = true)
-    private String correo;
+	/** Correo electrónico del usuario. No puede repetirse. */
+	@Column(nullable = false, unique = true)
+	private String correo;
 
-    /** Contraseña del usuario (más adelante se guardará cifrada). */
-    @Column(nullable = false)
-    private String contrasena;
+	/** Contraseña del usuario (más adelante se guardará cifrada). */
+	@Column(nullable = false)
+	private String contrasena;
 
-    /** Fecha y hora en la que el usuario creó su cuenta. */
-    private LocalDateTime fechaRegistro;
+	/** Fecha y hora en la que el usuario creó su cuenta. */
+	private LocalDateTime fechaRegistro;
 
-    /** Rol del usuario (ADMIN o USUARIO). Muchos usuarios pueden compartir el mismo rol. */
-    @ManyToOne
-    @JoinColumn(name = "rol_id", nullable = false)
-    private Rol rol;
+	/**
+	 * Rol del usuario (ADMIN o USUARIO). Muchos usuarios pueden compartir el mismo
+	 * rol.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "rol_id", nullable = false)
+	private Rol rol;
 
-    /**
-     * Constructor vacío, necesario para que JPA pueda crear objetos
-     * al leer los datos desde la base de datos.
-     */
-    public Usuario() {
-    }
+	/** Coordenada horizontal de la última posición del jugador en el mapa. */
+	private Integer posicionX;
 
-    /**
-     * Obtiene el identificador del usuario.
-     *
-     * @return el id del usuario
-     */
-    public Long getId() {
-        return id;
-    }
+	/** Coordenada vertical de la última posición del jugador en el mapa. */
+	private Integer posicionY;
 
-    /**
-     * Cambia el identificador del usuario.
-     *
-     * @param id nuevo id del usuario
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+	/**
+	 * Constructor vacío, necesario para que JPA pueda crear objetos al leer los
+	 * datos desde la base de datos.
+	 */
+	public Usuario() {
+	}
 
-    /**
-     * Obtiene el nombre de usuario.
-     *
-     * @return el nombre con el que el usuario aparece en el juego
-     */
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
+	/**
+	 * Obtiene el identificador del usuario.
+	 *
+	 * @return el id del usuario
+	 */
+	public Long getId() {
+		return id;
+	}
 
-    /**
-     * Cambia el nombre de usuario.
-     *
-     * @param nombreUsuario nuevo nombre de usuario
-     */
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
+	/**
+	 * Cambia el identificador del usuario.
+	 *
+	 * @param id nuevo id del usuario
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    /**
-     * Obtiene el correo electrónico del usuario.
-     *
-     * @return el correo del usuario
-     */
-    public String getCorreo() {
-        return correo;
-    }
+	/**
+	 * Obtiene el nombre de usuario.
+	 *
+	 * @return el nombre con el que el usuario aparece en el juego
+	 */
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
 
-    /**
-     * Cambia el correo electrónico del usuario.
-     *
-     * @param correo nuevo correo del usuario
-     */
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+	/**
+	 * Cambia el nombre de usuario.
+	 *
+	 * @param nombreUsuario nuevo nombre de usuario
+	 */
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
 
-    /**
-     * Obtiene la contraseña del usuario.
-     *
-     * @return la contraseña del usuario
-     */
-    public String getContrasena() {
-        return contrasena;
-    }
+	/**
+	 * Obtiene el correo electrónico del usuario.
+	 *
+	 * @return el correo del usuario
+	 */
+	public String getCorreo() {
+		return correo;
+	}
 
-    /**
-     * Cambia la contraseña del usuario.
-     *
-     * @param contrasena nueva contraseña del usuario
-     */
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
+	/**
+	 * Cambia el correo electrónico del usuario.
+	 *
+	 * @param correo nuevo correo del usuario
+	 */
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
 
-    /**
-     * Obtiene la fecha y hora de registro del usuario.
-     *
-     * @return la fecha y hora en la que se creó la cuenta
-     */
-    public LocalDateTime getFechaRegistro() {
-        return fechaRegistro;
-    }
+	/**
+	 * Obtiene la contraseña del usuario.
+	 *
+	 * @return la contraseña del usuario
+	 */
+	public String getContrasena() {
+		return contrasena;
+	}
 
-    /**
-     * Cambia la fecha y hora de registro del usuario.
-     *
-     * @param fechaRegistro nueva fecha y hora de registro
-     */
-    public void setFechaRegistro(LocalDateTime fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
+	/**
+	 * Cambia la contraseña del usuario.
+	 *
+	 * @param contrasena nueva contraseña del usuario
+	 */
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
+	}
 
-    /**
-     * Obtiene el rol del usuario.
-     *
-     * @return el rol asignado al usuario
-     */
-    public Rol getRol() {
-        return rol;
-    }
+	/**
+	 * Obtiene la fecha y hora de registro del usuario.
+	 *
+	 * @return la fecha y hora en la que se creó la cuenta
+	 */
+	public LocalDateTime getFechaRegistro() {
+		return fechaRegistro;
+	}
 
-    /**
-     * Cambia el rol del usuario.
-     *
-     * @param rol nuevo rol del usuario
-     */
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
+	/**
+	 * Cambia la fecha y hora de registro del usuario.
+	 *
+	 * @param fechaRegistro nueva fecha y hora de registro
+	 */
+	public void setFechaRegistro(LocalDateTime fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	/**
+	 * Obtiene el rol del usuario.
+	 *
+	 * @return el rol asignado al usuario
+	 */
+	public Rol getRol() {
+		return rol;
+	}
+
+	/**
+	 * Cambia el rol del usuario.
+	 *
+	 * @param rol nuevo rol del usuario
+	 */
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
+	/**
+	 * Obtiene la coordenada horizontal de la última posición del jugador.
+	 *
+	 * @return la coordenada x, o null si el jugador aún no se ha movido
+	 */
+	public Integer getPosicionX() {
+		return posicionX;
+	}
+
+	/**
+	 * Cambia la coordenada horizontal de la posición del jugador.
+	 *
+	 * @param posicionX nueva coordenada x
+	 */
+	public void setPosicionX(Integer posicionX) {
+		this.posicionX = posicionX;
+	}
+
+	/**
+	 * Obtiene la coordenada vertical de la última posición del jugador.
+	 *
+	 * @return la coordenada y, o null si el jugador aún no se ha movido
+	 */
+	public Integer getPosicionY() {
+		return posicionY;
+	}
+
+	/**
+	 * Cambia la coordenada vertical de la posición del jugador.
+	 *
+	 * @param posicionY nueva coordenada y
+	 */
+	public void setPosicionY(Integer posicionY) {
+		this.posicionY = posicionY;
+	}
 }
