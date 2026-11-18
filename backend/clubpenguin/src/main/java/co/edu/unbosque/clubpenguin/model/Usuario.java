@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import co.edu.unbosque.clubpenguin.util.CifradoConverter;
+import jakarta.persistence.Convert;
 
 /**
  * Representa a un usuario registrado en el juego. Cada objeto de esta clase
@@ -31,7 +33,11 @@ public class Usuario {
 	@Column(nullable = false, unique = true)
 	private String nombreUsuario;
 
-	/** Correo electrónico del usuario. No puede repetirse. */
+	/**
+	 * Correo electrónico del usuario. No puede repetirse. Se guarda cifrado con
+	 * AES.
+	 */
+	@Convert(converter = CifradoConverter.class)
 	@Column(nullable = false, unique = true)
 	private String correo;
 
