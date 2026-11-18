@@ -133,21 +133,6 @@ public class UsuarioService {
 	}
 
 	/**
-	 * Elimina la cuenta de un usuario junto con todas sus partidas. Solo debe
-	 * usarlo un administrador.
-	 *
-	 * @param id identificador del usuario que se eliminará
-	 * @throws RecursoNoEncontradoException si el usuario no existe
-	 */
-	public void eliminar(Long id) {
-		if (!usuarioRepository.existsById(id)) {
-			throw new RecursoNoEncontradoException("Usuario no encontrado");
-		}
-		partidaRepository.deleteByUsuarioId(id);
-		usuarioRepository.deleteById(id);
-	}
-
-	/**
 	 * Elimina la cuenta de un usuario junto con sus partidas y sus retos. Solo debe
 	 * usarlo un administrador.
 	 *
