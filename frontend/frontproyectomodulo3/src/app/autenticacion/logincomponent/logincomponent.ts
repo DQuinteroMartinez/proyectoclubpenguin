@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Loginrequestmodel } from '../../models/loginrequestmodel';
 import { Autenticacionservice } from '../../services/autenticacionservice';
+import { Router } from '@angular/router';
 
 /** Pantalla de inicio de sesion. También muestra el formulario, valida los campos y el login en
  * Autenticacionservice */
@@ -18,9 +19,8 @@ export class Logincomponent {
   formulario: FormGroup;
   cargando = false;
   mensajeError = ' ';
-  mensajeExito = ' ';
 
-  constructor (private fb: FormBuilder, private autenticacion: Autenticacionservice) {
+  constructor (private fb: FormBuilder, private autenticacion: Autenticacionservice, private router: Router) {
     this.formulario = this.fb.group({
       nombreUsuario: ['',Validators.required],
       password: ['', Validators.required],
@@ -35,12 +35,11 @@ export class Logincomponent {
     }
     this.cargando = true;
     this.mensajeError = '';
-    this.mensajeExito = '';
 
     this.autenticacion.login(this.formulario.getRawValue() as Loginrequestmodel).subscribe({
-      next: (respuesta) => {
+      next: () => {
         this.cargando = false;
-        this.mensajeExito = `Sesión iniciada como ${respuesta.nombreUsuario} (${respuesta.rol})`;
+        this.router.navigate(['/usuarios']);
       },
       error: (error) => {
         this.cargando = false;
