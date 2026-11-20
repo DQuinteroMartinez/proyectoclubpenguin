@@ -56,7 +56,7 @@ export class Registrocomponent {
   /** Envpia los datos al backend si el formulario es válido. Si sale bien, sale un mensaje de éxito,
    * si no, muestra los errores */
 
-  private manejaError(erro: HttpErrorResponse): void {
+  private manejaError(error: HttpErrorResponse): void {
     if (error.status === 0) {
       this.mensajeError = 'No se pudo conectar con el servidor';
       return;
