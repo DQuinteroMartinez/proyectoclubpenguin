@@ -1,4 +1,4 @@
-import { Service } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -11,7 +11,6 @@ import { Posiciondtomodel } from '../models/posiciondtomodel';
 @Injectable({
   providedIn: 'root',
 })
-@Service()
 export class Posicionservice {
   /** URL base de la API, tomada del archivo de environments. */
   private readonly apiUrl = environment.apiUrl;
