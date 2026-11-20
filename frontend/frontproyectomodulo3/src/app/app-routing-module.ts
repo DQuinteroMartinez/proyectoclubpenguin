@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { sesionguard } from './guards/sesionguard';
 
 const routes: Routes = [
+  {path: 'usuarios', canActivate: [sesionguard], loadChildren: () => import ('./usuarios/usuarios-module')
+      .then((m) => m.UsuariosModule)},
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '', loadChildren: () => import('./autenticacion/autenticacion-module').
   then((m) => m.AutenticacionModule)}
