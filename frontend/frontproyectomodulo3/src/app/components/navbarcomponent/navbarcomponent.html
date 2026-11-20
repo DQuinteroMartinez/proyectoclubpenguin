@@ -1,8 +1,14 @@
-<nav class="navbar bg-1 fg-2">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="/docs/6.0/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      Bootstrap
-    </a>
-  </div>
+<nav>
+  <span class="titulo">Club Penguin</span>
+
+  @if (sesionIniciada$ | async) {
+    <span class="usuario">{{ nombreUsuario }}</span>
+    @if (esAdmin$ | async) {
+      <span class="insignia-admin">ADMIN</span>
+    }
+    <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+  } @else {
+    <a routerLink="/login">Iniciar sesión</a>
+    <a routerLink="/registro">Registrarse</a>
+  }
 </nav>
