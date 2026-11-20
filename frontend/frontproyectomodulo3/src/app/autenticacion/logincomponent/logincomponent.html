@@ -1,1 +1,30 @@
-<p>logincomponent works!</p>
+<h2>Iniciar sesión</h2>
+
+<form [formGroup]="formulario" (ngSubmit)="iniciarSesion()">
+
+  <div>
+    <label for="nombreUsuario">Usuario</label>
+    <input id="nombreUsuario" type="text" formControlName="nombreUsuario" />
+    @if (formulario.get('nombreUsuario')?.touched && formulario.get('nombreUsuario')?.invalid) {
+      <p class="error">El usuario es obligatorio</p>
+    }
+  </div>
+
+  <div>
+    <label for="contrasena">Contraseña</label>
+    <input id="contrasena" type="password" formControlName="contrasena" />
+    @if (formulario.get('contrasena')?.touched && formulario.get('contrasena')?.invalid) {
+      <p class="error">La contraseña es obligatoria</p>
+    }
+  </div>
+  <button type="submit" [disabled]="cargando">Entrar</button>
+
+</form>
+
+@if (mensajeError) {
+  <p class="error">{{ mensajeError }}</p>
+}
+@if (mensajeExito) {
+  <p class="exito">{{ mensajeExito }}</p>
+}
+<p>¿No tienes cuenta? <a routerLink="/registro">Regístrate</a></p>
