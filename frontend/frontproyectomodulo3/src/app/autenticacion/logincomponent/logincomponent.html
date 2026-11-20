@@ -12,7 +12,7 @@
 
   <div>
     <label for="contrasena">Contraseña</label>
-    <input id="contrasena" type="password" formControlName="contrasena" />
+    <input id="contrasena" type="password" formControlName="password" />
     @if (formulario.get('contrasena')?.touched && formulario.get('contrasena')?.invalid) {
       <p class="error">La contraseña es obligatoria</p>
     }

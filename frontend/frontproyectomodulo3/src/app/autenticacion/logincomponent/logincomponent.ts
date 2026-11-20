@@ -1,18 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Autenticacionservice } from '../../services/autenticacionservice';
-import { required } from '@angular/forms/signals';
 import { Loginrequestmodel } from '../../models/loginrequestmodel';
+import { Autenticacionservice } from '../../services/autenticacionservice';
 
 /** Pantalla de inicio de sesion. También muestra el formulario, valida los campos y el login en
  * Autenticacionservice */
-
-@Component({
-  selector: 'app-logincomponent',
-  standalone: false,
-  styleUrl: './logincomponent.css',
-  templateUrl: './logincomponent.html',
-})
 
 @Component({
   selector: 'app-logincomponent',
