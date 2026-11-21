@@ -2,8 +2,13 @@
 
 <div class="escenario" [style.width.px]="anchoEscenario" [style.height.px]="altoEscenario">
 
-  <div class="pinguino" [style.left.px]="x" [style.top.px]="y" [style.width.px]="tamanoPinguino"
-    [style.height.px]="tamanoPinguino">
+  <div class="pinguino" [class.admin]="esAdmin" [style.left.px]="x" [style.top.px]="y"
+    [style.width.px]="tamanoPinguino" [style.height.px]="tamanoPinguino">
+
+    @if (esAdmin) {
+      <span class="corona">👑</span>
+    }
     🐧
   </div>
+
 </div>
