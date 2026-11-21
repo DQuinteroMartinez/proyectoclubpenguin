@@ -4,6 +4,11 @@ import { sesionguard } from './guards/sesionguard';
 
 const routes: Routes = [
   {
+    path: 'minijuegos',
+    canActivate: [sesionguard],
+    loadChildren: () => import('./minijuegos/minijuegos-module').then((m) => m.MinijuegosModule),
+  },
+  {
     path: 'mapa',
     canActivate: [sesionguard],
     loadChildren: () => import('./mapa/mapa-module').then((m) => m.MapaModule),

@@ -1,0 +1,15 @@
+.escenario {
+  position: relative;
+  margin: 20px auto;
+  border: 3px solid #2b6c8f;
+  background: linear-gradient(#bfe8ff, #ffffff);
+  overflow: hidden;
+}
+
+.canasta {
+  position: absolute;
+  bottom: 0;
+  font-size: 34px;
+  line-height: 40px;
+  text-align: center;
+}
