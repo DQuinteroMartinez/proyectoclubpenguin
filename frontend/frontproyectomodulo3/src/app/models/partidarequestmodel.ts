@@ -1,9 +1,9 @@
 export interface Partidarequestmodel {
   /** Datos que se envían al terminar una partida */
 
-  minijuegoId: string;
+  minijuegoId: number;
   /** Identificador del minijuego jugado */
 
-  puntaje: string;
+  puntaje: number;
   /** Puntaje obtenido */
 }

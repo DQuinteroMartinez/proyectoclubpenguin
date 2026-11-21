@@ -1,0 +1,28 @@
+<h2>Mi historial de partidas</h2>
+
+@if (cargando()) {
+  <p>Cargando historial...</p>
+} @else if (mensajeError()) {
+  <p class="error">{{ mensajeError() }}</p>
+} @else if (partidas().length === 0) {
+  <p>Todavía no has jugado ninguna partida.</p>
+} @else {
+  <table>
+    <thead>
+    <tr>
+      <th>Minijuego</th>
+      <th>Puntaje</th>
+      <th>Fecha</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (partida of partidas(); track partida.id) {
+        <tr>
+          <td>{{ partida.minijuego }}</td>
+          <td>{{ partida.puntaje }}</td>
+          <td>{{ partida.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

@@ -1,4 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit, signal } from '@angular/core';
+import { Partidaservice } from '../../services/partidaservice';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**  Este es uno de los minijuegos. El jugador mueve una canasta con las flechas del teclado
  * para atrapar bolsas que caen */
@@ -17,6 +19,7 @@ interface Bolsa{
 })
 export class Atrapabolsascomponent {
 
+  readonly idMinijuego = 2;
   readonly anchoEscenario = 600;
   readonly altoEscenario = 400;
   readonly anchoCanasta = 70;
@@ -35,11 +38,15 @@ export class Atrapabolsascomponent {
   puntaje = signal(0);
   tiempoRestante = signal(this.duracionPartida);
   terminado = signal(false);
+  estadoGuardado = signal<'guardando' | 'guardado' | 'error' | null>(null);
+  mensajeErrorGuardado = signal('');
 
   private contadorVueltas = 0;
   private siguienteId  = 0;
   private temporizador?: ReturnType<typeof setInterval>;
   private temporizadorTiempo?: ReturnType<typeof setInterval>;
+
+  constructor (private partidaservice: Partidaservice){}
 
   ngOnInit(): void{
     this.iniciarPartida();
@@ -57,6 +64,7 @@ export class Atrapabolsascomponent {
     this.bolsas.set([]);
     this.tiempoRestante.set(this.duracionPartida);
     this.terminado.set(false);
+    this.estadoGuardado.set(null);
     this.contadorVueltas = 0;
     this.x = this.xInicial;
     this.temporizador = setInterval(() => this.actualizarJuego(), this.intervaloJuego);
@@ -75,8 +83,21 @@ export class Atrapabolsascomponent {
   private terminarPartida(): void {
     this.detenerRelojes();
     this.terminado.set(true);
+    this.guardarPatida();
   }
   /** Permite terminar la partida deteniendo los relojes y muestra el panel de fin */
+
+  guardarPatida(): void {
+    this.estadoGuardado.set('guardando');
+    this.mensajeErrorGuardado.set('');
+    this.partidaservice.registrar({ minijuegoId: this.idMinijuego, puntaje: this.puntaje() }).subscribe({
+      next: () => this.estadoGuardado.set('guardado'), error: (error: HttpErrorResponse) => {
+        this.estadoGuardado.set('error');
+        this.mensajeErrorGuardado.set(error.status === 0 ? 'No se pudo conectar con el servidor' :
+          (error.error?.error ?? 'No se pudo guardar la partida'));
+      },
+    });
+  }
 
   private detenerRelojes(): void{
     clearInterval(this.temporizador);

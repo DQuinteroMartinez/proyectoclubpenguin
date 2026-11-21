@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MinijuegosRoutingModule } from './minijuegos-routing-module';
-import { Atrapabolsasminijuego } from './atrapabolsasminijuego/atrapabolsasminijuego';
 import { Atrapabolsascomponent } from './atrapabolsascomponent/atrapabolsascomponent';
+import { Catalogocomponent } from './catalogocomponent/catalogocomponent';
+import { Historialcomponent } from './historialcomponent/historialcomponent';
 
 @NgModule({
-  declarations: [Atrapabolsasminijuego, Atrapabolsascomponent],
+  declarations: [Atrapabolsascomponent, Catalogocomponent, Historialcomponent],
   imports: [CommonModule, MinijuegosRoutingModule],
 })
 export class MinijuegosModule {}

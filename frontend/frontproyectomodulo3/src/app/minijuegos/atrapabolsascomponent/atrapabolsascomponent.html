@@ -20,6 +20,17 @@
       <h3>¡Tiempo terminado!</h3>
       <p>Puntaje final: {{ puntaje() }}</p>
       <button type="button" (click)="iniciarPartida()">Jugar de nuevo</button>
+
+      @if (estadoGuardado() === 'guardando') {
+        <p>Guardando partida...</p>
+      }
+      @if (estadoGuardado() === 'guardado') {
+        <p class="exito">Partida guardada</p>
+      }
+      @if (estadoGuardado() === 'error') {
+        <p class="error">{{ mensajeErrorGuardado() }}</p>
+        <button type="button" (click)="guardarPartida()">Reintentar guardado</button>
+      }
     </div>
   }
 
