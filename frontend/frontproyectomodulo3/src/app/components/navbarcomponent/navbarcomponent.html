@@ -2,6 +2,7 @@
   <span class="titulo">Club Penguin</span>
 
   @if (sesionIniciada$ | async) {
+    <a routerLink="/mapa">Mapa</a>
     <a routerLink="/usuarios">Usuarios</a>
     <span class="usuario">{{ nombreUsuario }}</span>
     @if (esAdmin$ | async) {
