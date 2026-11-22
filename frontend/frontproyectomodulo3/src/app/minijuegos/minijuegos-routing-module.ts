@@ -6,6 +6,7 @@ import { Historialcomponent } from './historialcomponent/historialcomponent';
 import { Concursobailecomponent } from './concursobailecomponent/concursobailecomponent';
 import { Carritosurfercomponent } from './carritosurfercomponent/carritosurfercomponent';
 import { Pizzatroncomponent } from './pizzatroncomponent/pizzatroncomponent';
+import { Cardjitsucomponent } from './cardjitsucomponent/cardjitsucomponent';
 
 const routes: Routes = [
   { path: '', component: Catalogocomponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'concurso-baile', component: Concursobailecomponent },
   { path: 'carrito-surfero', component: Carritosurfercomponent},
   { path: 'pizzatron', component: Pizzatroncomponent },
+  { path: 'card-jjitsu', component: Cardjitsucomponent}
 ];
 
 @NgModule({

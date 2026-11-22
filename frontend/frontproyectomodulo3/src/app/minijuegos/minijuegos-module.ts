@@ -8,6 +8,7 @@ import { Historialcomponent } from './historialcomponent/historialcomponent';
 import { Concursobailecomponent } from './concursobailecomponent/concursobailecomponent';
 import { Carritosurfercomponent } from './carritosurfercomponent/carritosurfercomponent';
 import { Pizzatroncomponent } from './pizzatroncomponent/pizzatroncomponent';
+import { Cardjitsucomponent } from './cardjitsucomponent/cardjitsucomponent';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { Pizzatroncomponent } from './pizzatroncomponent/pizzatroncomponent';
     Concursobailecomponent,
     Carritosurfercomponent,
     Pizzatroncomponent,
+    Cardjitsucomponent,
   ],
   imports: [CommonModule, MinijuegosRoutingModule],
 })

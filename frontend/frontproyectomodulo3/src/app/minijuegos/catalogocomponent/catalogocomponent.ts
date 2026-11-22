@@ -15,6 +15,7 @@ import { Minijuegodtomodel } from '../../models/minijuegodtomodel';
 export class Catalogocomponent implements OnInit {
 
   readonly rutas: Record<number, string> = {
+    1: '/minijuegos/card-jitsu',
     2: '/minijuegos/atrapabolsas',
     3: '/minijuegos/pizzatron',
     4: '/minijuegos/carrito-surfero',
