@@ -4,6 +4,11 @@ import { sesionguard } from './guards/sesionguard';
 
 const routes: Routes = [
   {
+    path: 'retos',
+    canActivate: [sesionguard],
+    loadChildren: () => import('./retos/retos-module').then((m) => m.RetosModule),
+  },
+  {
     path: 'rankings',
     canActivate: [sesionguard],
     loadChildren: () => import('./rankings/rankings-module').then((m) => m.RankingsModule),

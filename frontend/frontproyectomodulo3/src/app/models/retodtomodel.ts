@@ -13,7 +13,7 @@ export interface Retodtomodel {
   minijuego: string;
   /** Nombre del minijuego del reto */
 
-  puntajeObtenido: number;
+  puntajeObjetivo: number;
   /** Puntaje que el retado debe superar */
 
   puntajeRetado: number | null;
