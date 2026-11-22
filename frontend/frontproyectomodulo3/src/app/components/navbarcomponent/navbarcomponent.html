@@ -17,7 +17,7 @@
     @if (esAdmin$ | async) {
       <span class="insignia-admin">ADMIN</span>
     }
-    
+
     <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
   } @else {
     <a routerLink="/login">Iniciar sesión</a>

@@ -14,7 +14,10 @@ import { Minijuegodtomodel } from '../../models/minijuegodtomodel';
 })
 export class Catalogocomponent implements OnInit {
 
-  readonly rutas: Record<number, string> = {2: '/minijuegos/atrapabolsas'}
+  readonly rutas: Record<number, string> = {
+    2: '/minijuegos/atrapabolsas',
+    5: '/minijuegos/concurso-baile',
+  }
 
   minijuegos =signal<Minijuegodtomodel[]>([]);
   cargando = signal(true);

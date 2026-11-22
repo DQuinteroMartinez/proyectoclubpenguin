@@ -1,0 +1,36 @@
+<h2>Concurso de Baile</h2>
+<p class="marcador">
+  Puntaje: {{ puntaje() }} | Racha: {{ racha() }} | Tiempo: {{ tiempoRestante() }} s
+</p>
+
+<div class="pista">
+  <div
+    class="flecha"
+    [class.acierto]="ultimoResultado() === 'acierto'"
+    [class.fallo]="ultimoResultado() === 'fallo'"
+  >
+    {{ flechaActual().simbolo }}
+  </div>
+  <p>Pulsa en el teclado la flecha que ves</p>
+
+  @if (terminado()) {
+    <div class="fin">
+      <h3>¡Se acabó el baile!</h3>
+      <p>Puntaje final: {{ puntaje() }}</p>
+      <p>Mejor racha: {{ mejorRacha() }}</p>
+
+      @if (estadoGuardado() === 'guardando') {
+        <p>Guardando partida...</p>
+      }
+      @if (estadoGuardado() === 'guardado') {
+        <p class="exito">Partida guardada</p>
+      }
+      @if (estadoGuardado() === 'error') {
+        <p class="error">{{ mensajeErrorGuardado() }}</p>
+        <button type="button" (click)="guardarPartida()">Reintentar guardado</button>
+      }
+
+      <button type="button" (click)="iniciarPartida()">Jugar de nuevo</button>
+    </div>
+  }
+</div>
