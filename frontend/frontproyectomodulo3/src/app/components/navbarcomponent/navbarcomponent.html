@@ -8,10 +8,16 @@
     <a routerLink="/minijuegos">Minijuegos</a>
     <a routerLink="/mapa">Mapa</a>
     <a routerLink="/usuarios">Usuarios</a>
+
+    @if (esAdmin$ | async) {
+      <a routerLink="/adminitracion">Administración</a>
+    }
+
     <span class="usuario">{{ nombreUsuario }}</span>
     @if (esAdmin$ | async) {
       <span class="insignia-admin">ADMIN</span>
     }
+    
     <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
   } @else {
     <a routerLink="/login">Iniciar sesión</a>

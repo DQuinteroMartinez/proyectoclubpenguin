@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { sesionguard } from './guards/sesionguard';
+import { adminguard } from './guards/adminguard';
 
 const routes: Routes = [
+  {
+    path: 'administracion',
+    canActivate: [adminguard],
+    loadChildren: () => import('./administracion/administracion-module').then((m) => m.AdministracionModule),
+  },
   {
     path: 'retos',
     canActivate: [sesionguard],

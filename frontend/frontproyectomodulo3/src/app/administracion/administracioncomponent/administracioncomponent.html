@@ -1,0 +1,59 @@
+<h2>Panel de administración</h2>
+
+@if (mensajeAccionError()) {
+  <p class="error">{{ mensajeAccionError() }}</p>
+}
+@if (mensajeAccionExito()) {
+  <p class="exito">{{ mensajeAccionExito() }}</p>
+}
+
+@if (cargando()) {
+  <p>Cargando usuarios...</p>
+} @else if (mensajeError()) {
+  <p class="error">{{ mensajeError() }}</p>
+} @else if (usuarios().length === 0) {
+  <p>No hay usuarios registrados.</p>
+} @else {
+  <table>
+    <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Correo</th>
+      <th>Rol</th>
+      <th>Fecha de registro</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (usuario of usuarios(); track usuario.id) {
+        <tr>
+          <td>{{ usuario.nombreUsuario }}</td>
+          <td>{{ usuario.correo ?? '—' }}</td>
+          <td>{{ usuario.rol }}</td>
+          <td>{{ usuario.fechaRegistro | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            @if (esMiCuenta(usuario)) {
+              <span class="tu-cuenta">Tu cuenta</span>
+            } @else {
+              <button
+                type="button"
+                (click)="cambiarRol(usuario)"
+                [disabled]="procesandoId() === usuario.id"
+              >
+                {{ usuario.rol === 'ADMIN' ? 'Quitar Admin' : 'Hacer Admin' }}
+              </button>
+              <button
+                type="button"
+                class="peligro"
+                (click)="eliminar(usuario)"
+                [disabled]="procesandoId() === usuario.id"
+              >
+                Eliminar
+              </button>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

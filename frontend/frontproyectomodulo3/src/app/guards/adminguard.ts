@@ -6,6 +6,7 @@ import { Autenticacionservice } from '../services/autenticacionservice';
  * Guard que exige sesión iniciada y rol ADMIN para entrar a una ruta.
  * Sin sesión redirige a /login; con sesión pero sin rol ADMIN, redirige al inicio.
  */
+
 export const adminguard: CanActivateFn = () => {
   const autenticacion = inject(Autenticacionservice);
   const router = inject(Router);
@@ -16,5 +17,5 @@ export const adminguard: CanActivateFn = () => {
   if (autenticacion.esAdmin()) {
   return true;
   }
-  return router.createUrlTree(['/']);
+  return router.createUrlTree(['/mapa']);
 };
