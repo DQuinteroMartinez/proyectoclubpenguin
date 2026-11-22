@@ -3,12 +3,14 @@ import { Partidaservice } from '../../services/partidaservice';
 import { HttpErrorResponse } from '@angular/common/http';
 
 
+
 interface Objeto {
   id: number;
   tipo: 'hielo' | 'pez';
   x: number;
   altura: number;
 }
+/** Obstaculo que se acerca al carrito o un premio */
 
 @Component({
   selector: 'app-carritosurfercomponent',
@@ -55,10 +57,12 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.iniciarPartida();
   }
+  /** Arranca la partida al mostrarse el component*/
 
   ngOnDestroy(): void {
     clearInterval(this.temporizador);
   }
+  /** Detiene el bucle del juego al salir de la pantalla, asi no sigue corriendo */
 
   iniciarPartida(): void {
 
@@ -76,6 +80,8 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
     this.temporizador = setInterval(() => this.actualizarJuego(), this.intervaloJuego);
 
   }
+  /** Inicializa todo y arranca el bucle del juego. Su uso es al abrir la pantalla y al pulsar
+   * 'Jugar de nuevo' */
 
   private actualizarJuego(): void {
 
@@ -119,6 +125,8 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
       }
     }
   }
+  /** Da una vuelta del juego, aplicando salto, aceleracion, movimiento de elementos, resuelve las
+   * colisiones y crea elementos nuevos */
 
   private tocaElCarrito(objeto: Objeto, alturaActual: number): boolean {
 
@@ -128,6 +136,7 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
       alturaActual + this.tamanoCarrito > objeto.altura;
     return solapaVertical && solapaVertical;
   }
+  /** Indica si un elemento esta tocando el carrito */
 
   private crearObjeto(): Objeto {
 
@@ -136,10 +145,12 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
     altura: esPez && Math.random() < 0.5 ? 90: 0 }
 
   }
+  /** Crea un nuevo elemento al borde derecho del escenario */
 
   private vueltasAleatorias(): number {
     return 40 + Math.floor(Math.random() * 40);
   }
+  /** Calcula aleatoriamente cuantas vueltas esperar para crear el sig elemento*/
 
   private terminarPartida(): void {
     clearInterval(this.temporizador);
@@ -147,6 +158,7 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
     this.guardarPartida();
 
   }
+  /** finaliza la partida, deteniendo el bucle, muestra el panel de fin y guarda el puntaje */
 
   @HostListener('window:resize', ['$event'])
   saltar (evento: KeyboardEvent): void {
@@ -158,10 +170,12 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
       this.velocidadVertical = this.velocidadSalto;
     }
   }
+  /** Hace saltar el carrito con la barra espaciadora o con flecha arriba */
 
   corazones(): string {
     return '❤️'.repeat(this.vidas());
   }
+  /** Devuelve las vidas restantes como corazones, motrandolas en el marcador */
 
   guardarPartida(): void {
 
@@ -177,5 +191,6 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
         }
       });
   }
+  /** Envía el puntaje de la partida del backend */
 
 }

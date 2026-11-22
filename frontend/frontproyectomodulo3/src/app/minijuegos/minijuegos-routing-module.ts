@@ -5,13 +5,15 @@ import { Atrapabolsascomponent } from './atrapabolsascomponent/atrapabolsascompo
 import { Historialcomponent } from './historialcomponent/historialcomponent';
 import { Concursobailecomponent } from './concursobailecomponent/concursobailecomponent';
 import { Carritosurfercomponent } from './carritosurfercomponent/carritosurfercomponent';
+import { Pizzatroncomponent } from './pizzatroncomponent/pizzatroncomponent';
 
 const routes: Routes = [
   { path: '', component: Catalogocomponent },
   { path: 'historial', component: Historialcomponent },
   { path: 'atrapabolsas', component: Atrapabolsascomponent },
   { path: 'concurso-baile', component: Concursobailecomponent },
-  { path: 'carrito-surfero', component: Carritosurfercomponent}
+  { path: 'carrito-surfero', component: Carritosurfercomponent},
+  { path: 'pizzatron', component: Pizzatroncomponent },
 ];
 
 @NgModule({
