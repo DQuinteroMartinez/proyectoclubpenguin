@@ -1,0 +1,57 @@
+<h2>Carrito Surfero</h2>
+<p class="marcador">
+  Puntaje: {{ puntaje() }} | Peces: {{ peces() }} | Vidas: {{ corazones() }}
+</p>
+
+<div
+  class="escenario"
+  [style.width.px]="anchoEscenario"
+  [style.height.px]="altoEscenario"
+>
+  <div class="suelo" [style.height.px]="alturaSuelo"></div>
+
+  @for (objeto of objetos(); track objeto.id) {
+    <div
+      class="objeto"
+      [style.left.px]="objeto.x"
+      [style.bottom.px]="alturaSuelo + objeto.altura"
+      [style.width.px]="tamanoObjeto"
+      [style.height.px]="tamanoObjeto"
+    >
+      {{ objeto.tipo === 'hielo' ? '🧊' : '🐟' }}
+    </div>
+  }
+
+  <div
+    class="carrito"
+    [style.left.px]="xCarrito"
+    [style.bottom.px]="alturaSuelo + alturaCarrito()"
+    [style.width.px]="tamanoCarrito"
+    [style.height.px]="tamanoCarrito"
+  >
+    🛒
+  </div>
+
+  @if (terminado()) {
+    <div class="fin">
+      <h3>¡Fin del recorrido!</h3>
+      <p>Puntaje final: {{ puntaje() }}</p>
+      <p>Peces atrapados: {{ peces() }}</p>
+
+      @if (estadoGuardado() === 'guardando') {
+        <p>Guardando partida...</p>
+      }
+      @if (estadoGuardado() === 'guardado') {
+        <p class="exito">Partida guardada</p>
+      }
+      @if (estadoGuardado() === 'error') {
+        <p class="error">{{ mensajeErrorGuardado() }}</p>
+        <button type="button" (click)="guardarPartida()">Reintentar guardado</button>
+      }
+
+      <button type="button" (click)="iniciarPartida()">Jugar de nuevo</button>
+    </div>
+  }
+</div>
+
+<p class="ayuda">Salta con la barra espaciadora o la flecha arriba</p>

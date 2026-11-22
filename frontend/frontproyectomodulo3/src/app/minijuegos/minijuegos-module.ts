@@ -6,6 +6,7 @@ import { Atrapabolsascomponent } from './atrapabolsascomponent/atrapabolsascompo
 import { Catalogocomponent } from './catalogocomponent/catalogocomponent';
 import { Historialcomponent } from './historialcomponent/historialcomponent';
 import { Concursobailecomponent } from './concursobailecomponent/concursobailecomponent';
+import { Carritosurfercomponent } from './carritosurfercomponent/carritosurfercomponent';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { Concursobailecomponent } from './concursobailecomponent/concursobaileco
     Catalogocomponent,
     Historialcomponent,
     Concursobailecomponent,
+    Carritosurfercomponent,
   ],
   imports: [CommonModule, MinijuegosRoutingModule],
 })

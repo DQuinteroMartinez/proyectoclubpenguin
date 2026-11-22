@@ -4,12 +4,14 @@ import { Catalogocomponent } from './catalogocomponent/catalogocomponent';
 import { Atrapabolsascomponent } from './atrapabolsascomponent/atrapabolsascomponent';
 import { Historialcomponent } from './historialcomponent/historialcomponent';
 import { Concursobailecomponent } from './concursobailecomponent/concursobailecomponent';
+import { Carritosurfercomponent } from './carritosurfercomponent/carritosurfercomponent';
 
 const routes: Routes = [
   { path: '', component: Catalogocomponent },
   { path: 'historial', component: Historialcomponent },
   { path: 'atrapabolsas', component: Atrapabolsascomponent },
-  { path: 'concurso-baile', component: Concursobailecomponent }
+  { path: 'concurso-baile', component: Concursobailecomponent },
+  { path: 'carrito-surfero', component: Carritosurfercomponent}
 ];
 
 @NgModule({

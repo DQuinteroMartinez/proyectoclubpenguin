@@ -16,6 +16,7 @@ export class Catalogocomponent implements OnInit {
 
   readonly rutas: Record<number, string> = {
     2: '/minijuegos/atrapabolsas',
+    4: '/minijuegos/carrito-surfero',
     5: '/minijuegos/concurso-baile',
   }
 
