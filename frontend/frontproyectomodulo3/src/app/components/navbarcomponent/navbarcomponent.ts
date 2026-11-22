@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Autenticacionservice } from '../../services/autenticacionservice';
 import { Router } from '@angular/router';
@@ -15,6 +15,7 @@ export class Navbarcomponent {
 
   sesionIniciada$: Observable<boolean>;
   esAdmin$: Observable<boolean>;
+  menuAbierto = signal(false);
 
   constructor (private autenticacion: Autenticacionservice, private router: Router) {
     this.sesionIniciada$ = this.autenticacion.sesionIniciada$;
@@ -25,8 +26,17 @@ export class Navbarcomponent {
     return this.autenticacion.obtenerNombreUsuario();
   }
 
+  alternarMenu(): void {
+    this.menuAbierto.update((abierto) => !abierto );
+  }
+
+  cerrarMenu(): void {
+    this.menuAbierto.set(false);
+  }
+
   cerrarSesion(): void {
     this.autenticacion.cerrarSesion();
+    this.cerrarMenu();
     this.router.navigate(['/login']);
   }
 }
