@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="co.edu.unbosque.clubpenguin.repository.RolRepository"/>
+    <fullyQualifiedTypeName name="co.edu.unbosque.clubpenguin.exeption.UsuarioYaExisteException"/>
+</qualifiedTypeNameHistroy>
