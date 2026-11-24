@@ -1,0 +1,28 @@
+.catalogo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 20px auto;
+  max-width: 900px;
+}
+
+.tarjeta {
+  border: 2px solid #2b6c8f;
+  border-radius: 10px;
+  padding: 16px;
+  background: #f4fbff;
+}
+
+.boton-jugar {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: #2b6c8f;
+  color: white;
+  text-decoration: none;
+}
+
+.proximamente {
+  color: #777;
+  font-style: italic;
+}

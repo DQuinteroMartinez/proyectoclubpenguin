@@ -1,0 +1,58 @@
+.marcador {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.ayuda {
+  text-align: center;
+  color: #555;
+}
+
+.escenario {
+  position: relative;
+  margin: 20px auto;
+  border: 3px solid #2b6c8f;
+  background: linear-gradient(#bfe8ff, #ffffff);
+  overflow: hidden;
+}
+
+.suelo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #cfe9f5;
+  border-top: 3px solid #2b6c8f;
+}
+
+.carrito,
+.objeto {
+  position: absolute;
+  text-align: center;
+}
+
+.carrito {
+  font-size: 34px;
+  line-height: 40px;
+}
+
+.objeto {
+  font-size: 26px;
+  line-height: 30px;
+}
+
+.fin {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  text-align: center;
+}
+
+.acciones {
+  text-align: center;
+}

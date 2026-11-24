@@ -1,4 +1,5 @@
 import { Component, computed, HostListener, OnDestroy, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { Partidaservice } from '../../services/partidaservice';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -46,13 +47,14 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
   estadoGuardado = signal<'guardando' | 'guardado' | 'error' | null>(null);
   mensajeErrorGuardado = signal('');
 
+  private saliendo = false;
   private velocidad = this.velocidadInicial;
   private velocidadVertical = 0;
   private vueltasParaSiguiente = 0;
   private siguienteId = 0;
   private temporizador?: ReturnType<typeof setInterval>;
 
-  constructor(private partidaservie: Partidaservice) {}
+  constructor(private partidaservice: Partidaservice, private router: Router) {}
 
   ngOnInit(): void {
     this.iniciarPartida();
@@ -61,8 +63,12 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.temporizador);
+    if (!this.terminado() && this.puntaje() > 0) {
+      this.partidaservice.registrar({ minijuegoId: this.idMinijuego, puntaje: this.puntaje() })
+        .subscribe({ error: () => { /* al salir no se puede mostrar el error, se ignora */ } });
+    }
   }
-  /** Detiene el bucle del juego al salir de la pantalla, asi no sigue corriendo */
+  /** Detiene el bucle al salir de la pantalla y guarda la partida si estaba a medias con puntos */
 
   iniciarPartida(): void {
 
@@ -74,6 +80,7 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
     this.vidas.set(this.vidasIniciales);
     this.terminado.set(false);
     this.estadoGuardado.set(null);
+    this.saliendo = false;
     this.velocidad = this.velocidadInicial;
     this.velocidadVertical = 0;
     this.vueltasParaSiguiente = this.vueltasAleatorias();
@@ -134,7 +141,7 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
       objeto.x + this.tamanoObjeto > this.xCarrito;
     const solapaVertical = alturaActual < objeto.altura + this.tamanoObjeto &&
       alturaActual + this.tamanoCarrito > objeto.altura;
-    return solapaVertical && solapaVertical;
+    return solapaHorizontal && solapaVertical;
   }
   /** Indica si un elemento esta tocando el carrito */
 
@@ -177,13 +184,40 @@ export class Carritosurfercomponent implements OnInit, OnDestroy {
   }
   /** Devuelve las vidas restantes como corazones, motrandolas en el marcador */
 
+  salir(): void {
+    if (this.estadoGuardado() === 'guardado') {
+      this.router.navigate(['/minijuegos']);
+      return;
+    }
+    this.saliendo = true;
+    if (!this.terminado()) {
+      clearInterval(this.temporizador);
+      this.terminado.set(true);
+    }
+    if (this.estadoGuardado() !== 'guardando') {
+      this.guardarPartida();
+    }
+  }
+  /** Permite salir del juego guardando lo jugado. Detiene la partida, envía el puntaje y, cuando
+   * el backend confirma, vuelve al catálogo. Si falla, se muestra el error para reintentar. */
+
+  salirSinGuardar(): void {
+    this.router.navigate(['/minijuegos']);
+  }
+  /** Sale al catálogo sin guardar (por si no hay conexión con el servidor). */
+
   guardarPartida(): void {
 
     this.estadoGuardado.set('guardando');
     this.mensajeErrorGuardado.set('');
-    this.partidaservie.registrar( { minijuegoId: this.idMinijuego, puntaje: this.puntaje() })
+    this.partidaservice.registrar( { minijuegoId: this.idMinijuego, puntaje: this.puntaje() })
       .subscribe({
-        next: () => this.estadoGuardado.set('guardado'),
+        next: () => {
+          this.estadoGuardado.set('guardado');
+          if (this.saliendo) {
+            this.router.navigate(['/minijuegos']);
+          }
+        },
         error: (error: HttpErrorResponse) => {
           this.estadoGuardado.set('error');
           this.mensajeErrorGuardado.set(error.status === 0 ? 'No se pudo conectar con el servidor'

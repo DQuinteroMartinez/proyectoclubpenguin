@@ -1,0 +1,133 @@
+/* Tarjeta central del formulario: reemplaza el aspecto plano de la pantalla. */
+:host {
+  display: block;
+  max-width: 420px;
+  margin: 24px auto;
+  padding: 32px 28px 24px;
+  background: rgba(255, 255, 255, 0.93);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(11, 42, 91, 0.35);
+  animation: aparecer 0.6s ease-out both;
+}
+
+h2 {
+  text-align: center;
+  color: #0b3d91;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+/* Pingüino que rebota sobre el título. */
+h2::before {
+  content: '🐧';
+  display: block;
+  font-size: 48px;
+  line-height: 1.2;
+  animation: rebotar 2.2s ease-in-out infinite;
+}
+
+form > div {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #1d3d52;
+}
+
+input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #c4dff2;
+  border-radius: 12px;
+  background: #f5fbff;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1c7ed6;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(28, 126, 214, 0.2);
+}
+
+input.ng-touched.ng-invalid {
+  border-color: #e03131;
+}
+
+button[type='submit'] {
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #1c7ed6, #0b3d91);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+
+button[type='submit']:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(11, 61, 145, 0.4);
+}
+
+button[type='submit']:disabled {
+  filter: grayscale(0.6);
+  cursor: wait;
+}
+
+.error {
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #ffe3e3;
+  color: #c92a2a;
+  font-size: 14px;
+}
+
+.exito {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #d3f9d8;
+  color: #2b8a3e;
+  font-size: 15px;
+}
+
+p {
+  text-align: center;
+}
+
+a {
+  color: #1c7ed6;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes rebotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host,
+  h2::before {
+    animation: none;
+  }
+}

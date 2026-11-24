@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b2a5b"/>
+      <stop offset="0.55" stop-color="#2b7bc4"/>
+      <stop offset="1" stop-color="#bfe6ff"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5ef2c2" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#7cf5d6" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#9b8cff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="nieve" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d7ecfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <path d="M0 160 C300 60 500 260 800 150 C1100 40 1300 240 1600 130 L1600 260 C1300 360 1100 160 800 270 C500 380 300 180 0 280 Z" fill="url(#aurora)"/>
+  <g fill="#ffffff" opacity="0.85">
+    <circle cx="140" cy="90" r="2"/><circle cx="360" cy="150" r="1.5"/><circle cx="560" cy="60" r="2"/>
+    <circle cx="820" cy="110" r="1.5"/><circle cx="1010" cy="50" r="2"/><circle cx="1240" cy="140" r="1.5"/>
+    <circle cx="1450" cy="70" r="2"/><circle cx="260" cy="40" r="1.5"/><circle cx="1130" cy="200" r="1.5"/>
+  </g>
+  <path d="M0 560 L170 380 L300 500 L470 300 L650 520 L820 360 L1000 540 L1180 330 L1360 510 L1500 400 L1600 480 L1600 900 L0 900 Z" fill="#7fb4dd"/>
+  <path d="M0 640 L140 500 L260 600 L430 440 L600 620 L780 480 L960 640 L1140 470 L1330 640 L1480 540 L1600 610 L1600 900 L0 900 Z" fill="#a9d2ee"/>
+  <path d="M470 300 L430 350 L470 340 L505 365 Z M1180 330 L1140 385 L1180 372 L1215 395 Z M820 360 L785 405 L822 395 L850 410 Z" fill="#ffffff" opacity="0.9"/>
+  <path d="M0 720 C250 660 450 760 700 720 C950 680 1150 770 1400 720 C1500 702 1560 710 1600 715 L1600 900 L0 900 Z" fill="url(#nieve)"/>
+  <path d="M0 810 C300 770 520 850 820 810 C1100 772 1350 850 1600 800 L1600 900 L0 900 Z" fill="#ffffff"/>
+  <g fill="#e9f6ff" opacity="0.9">
+    <ellipse cx="260" cy="770" rx="60" ry="9"/><ellipse cx="900" cy="790" rx="80" ry="10"/><ellipse cx="1300" cy="765" rx="55" ry="8"/>
+  </g>
+</svg>

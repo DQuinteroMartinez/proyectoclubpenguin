@@ -1,4 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { Partidaservice } from '../../services/partidaservice';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -17,14 +18,14 @@ interface Bolsa{
   styleUrl: './atrapabolsascomponent.css',
   templateUrl: './atrapabolsascomponent.html',
 })
-export class Atrapabolsascomponent {
+export class Atrapabolsascomponent implements OnInit, OnDestroy {
 
   readonly idMinijuego = 2;
   readonly anchoEscenario = 600;
   readonly altoEscenario = 400;
   readonly anchoCanasta = 70;
   readonly altoCanasta = 40;
-  readonly paso = 20;
+  readonly paso = 8;
   readonly tamanoBolsa = 30;
   readonly velocidadCaida = 4;
   readonly intervaloJuego = 30;
@@ -33,7 +34,7 @@ export class Atrapabolsascomponent {
   readonly duracionPartida = 30;
   readonly xInicial = (this.anchoEscenario - this.anchoCanasta) /2;
 
-  x = this.xInicial;
+  x = signal(this.xInicial);
   bolsas = signal<Bolsa[]>([]);
   puntaje = signal(0);
   tiempoRestante = signal(this.duracionPartida);
@@ -42,11 +43,14 @@ export class Atrapabolsascomponent {
   mensajeErrorGuardado = signal('');
 
   private contadorVueltas = 0;
+  private saliendo = false;
+  private moviendoIzquierda = false;
+  private moviendoDerecha = false;
   private siguienteId  = 0;
   private temporizador?: ReturnType<typeof setInterval>;
   private temporizadorTiempo?: ReturnType<typeof setInterval>;
 
-  constructor (private partidaservice: Partidaservice){}
+  constructor (private partidaservice: Partidaservice, private router: Router){}
 
   ngOnInit(): void{
     this.iniciarPartida();
@@ -55,8 +59,13 @@ export class Atrapabolsascomponent {
 
   ngOnDestroy(): void{
     this.detenerRelojes();
+    if (!this.terminado() && this.puntaje() > 0) {
+      this.partidaservice.registrar({ minijuegoId: this.idMinijuego, puntaje: this.puntaje() })
+        .subscribe({ error: () => { /* al salir no se puede mostrar el error, se ignora */ } });
+    }
   }
-  /** Este metodo detiene el bucle del juego al salir de la pantalla, para que no siga corriendo */
+  /** Este metodo detiene el bucle del juego al salir de la pantalla. Si había una partida a medias
+   * con puntos, la guarda para no perder lo jugado */
 
   iniciarPartida(): void{
     this.detenerRelojes();
@@ -66,9 +75,10 @@ export class Atrapabolsascomponent {
     this.terminado.set(false);
     this.estadoGuardado.set(null);
     this.contadorVueltas = 0;
-    this.x = this.xInicial;
+    this.x.set(this.xInicial);
+    this.saliendo = false;
     this.temporizador = setInterval(() => this.actualizarJuego(), this.intervaloJuego);
-    this.temporizadorTiempo= setInterval(() => this.restarSegundo, 1000);
+    this.temporizadorTiempo= setInterval(() => this.restarSegundo(), 1000);
   }
   /** Pone todo en estado inicial y arranca los dos relojes */
 
@@ -91,13 +101,41 @@ export class Atrapabolsascomponent {
     this.estadoGuardado.set('guardando');
     this.mensajeErrorGuardado.set('');
     this.partidaservice.registrar({ minijuegoId: this.idMinijuego, puntaje: this.puntaje() }).subscribe({
-      next: () => this.estadoGuardado.set('guardado'), error: (error: HttpErrorResponse) => {
+      next: () => {
+        this.estadoGuardado.set('guardado');
+        if (this.saliendo) {
+          this.router.navigate(['/minijuegos']);
+        }
+      },
+      error: (error: HttpErrorResponse) => {
         this.estadoGuardado.set('error');
         this.mensajeErrorGuardado.set(error.status === 0 ? 'No se pudo conectar con el servidor' :
           (error.error?.error ?? 'No se pudo guardar la partida'));
       },
     });
   }
+
+  salir(): void {
+    if (this.estadoGuardado() === 'guardado') {
+      this.router.navigate(['/minijuegos']);
+      return;
+    }
+    this.saliendo = true;
+    if (!this.terminado()) {
+      this.detenerRelojes();
+      this.terminado.set(true);
+    }
+    if (this.estadoGuardado() !== 'guardando') {
+      this.guardarPartida();
+    }
+  }
+  /** Permite salir del juego guardando lo jugado. Detiene la partida, envía el puntaje y, cuando
+   * el backend confirma, vuelve al catálogo. Si falla, se muestra el error para reintentar. */
+
+  salirSinGuardar(): void {
+    this.router.navigate(['/minijuegos']);
+  }
+  /** Sale al catálogo sin guardar (por si no hay conexión con el servidor). */
 
   private detenerRelojes(): void{
     clearInterval(this.temporizador);
@@ -108,6 +146,7 @@ export class Atrapabolsascomponent {
   private actualizarJuego(): void{
 
     this.contadorVueltas++;
+    this.moverCanasta();
     const bajadas = this.bolsas().map((bolsa) => ({ ...bolsa, y:bolsa.y + this.velocidadCaida}));
     const atrapadas = bajadas.filter ((bolsa) => this.chocaConCanasta(bolsa));
     const lista = bajadas.filter((bolsa) => !this.chocaConCanasta(bolsa)
@@ -129,7 +168,7 @@ export class Atrapabolsascomponent {
   private chocaConCanasta(bolsa: Bolsa): boolean {
     const arribaCanasta = this.altoEscenario -this.altoCanasta;
     const llegoALaAltura = bolsa.y + this.tamanoBolsa >= arribaCanasta;
-    const solapaEnHorizontal = bolsa.x < this.x + this.anchoCanasta && bolsa.x + this.tamanoBolsa > this.x;
+    const solapaEnHorizontal = bolsa.x < this.x() + this.anchoCanasta && bolsa.x + this.tamanoBolsa > this.x();
 
     return llegoALaAltura && solapaEnHorizontal;
   }
@@ -137,25 +176,37 @@ export class Atrapabolsascomponent {
    * llega a la alruta de la canasta y se solapan de forma horizontal*/
 
   @HostListener('window:keydown', ['$event'])
-  moverCanasta(evento: KeyboardEvent) {
-
-    const maximoX = this.anchoEscenario - this.anchoCanasta;
-
-    switch(evento.key){
-
-      case 'ArrowLeft':
-        this.x = Math.max(0, this.x - this.paso);
-        break;
-
-      case 'ArrowRight':
-        this.x = Math.max(maximoX, this.x + this.paso);
-        break;
-
-      default:
-        return;
+  teclaPulsada(evento: KeyboardEvent): void {
+    if (evento.key === 'ArrowLeft') {
+      this.moviendoIzquierda = true;
+    } else if (evento.key === 'ArrowRight') {
+      this.moviendoDerecha = true;
+    } else {
+      return;
     }
     evento.preventDefault();
   }
-  /** Ayuda a mover la canasta de izquierda a derecha cuando se pulsa una flecha del teclado.
-   * También se limita la posicion para que la canasta no salga del area limitada */
+  /** Recuerda qué flecha está pulsada; el movimiento real ocurre en cada vuelta del juego, así
+   * la canasta se desliza suave en vez de saltar con la repetición del teclado. */
+
+  @HostListener('window:keyup', ['$event'])
+  teclaSoltada(evento: KeyboardEvent): void {
+    if (evento.key === 'ArrowLeft') {
+      this.moviendoIzquierda = false;
+    } else if (evento.key === 'ArrowRight') {
+      this.moviendoDerecha = false;
+    }
+  }
+  /** Deja de mover la canasta cuando se suelta la flecha. */
+
+  private moverCanasta(): void {
+    const maximoX = this.anchoEscenario - this.anchoCanasta;
+    if (this.moviendoIzquierda) {
+      this.x.update((actual) => Math.max(0, actual - this.paso));
+    }
+    if (this.moviendoDerecha) {
+      this.x.update((actual) => Math.min(maximoX, actual + this.paso));
+    }
+  }
+  /** Mueve la canasta de izquierda a derecha según las flechas pulsadas, sin salirse del área. */
 }

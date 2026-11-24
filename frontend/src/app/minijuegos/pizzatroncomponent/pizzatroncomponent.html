@@ -1,0 +1,66 @@
+<h2>Pizzatrón 3000</h2>
+<p class="marcador">
+  Puntaje: {{ puntaje() }} | Pizzas: {{ pizzasCompletadas() }} | Tiempo: {{ tiempoRestante() }} s
+</p>
+
+<div class="acciones">
+  <button type="button" class="btn btn-outline-danger btn-sm" (click)="salir()">Salir y guardar</button>
+</div>
+
+<div class="cocina">
+  <section class="pedido">
+    <h3>Pedido</h3>
+    <div class="fila">
+      @for (ingrediente of pedido(); track ingrediente.id) {
+        <span class="ingrediente-pedido" [class.hecho]="estaAgregado(ingrediente)">
+          {{ ingrediente.simbolo }} {{ ingrediente.nombre }}
+        </span>
+      }
+    </div>
+  </section>
+
+  <section class="pizza">
+    <h3>Tu pizza 🍕</h3>
+    <div class="fila">
+      @for (ingrediente of agregados(); track ingrediente.id) {
+        <span class="ingrediente-puesto">{{ ingrediente.simbolo }}</span>
+      } @empty {
+        <span class="vacia">Todavía está vacía</span>
+      }
+    </div>
+  </section>
+
+  <p class="mensaje">{{ mensaje() }}</p>
+
+  <div class="ingredientes">
+    @for (ingrediente of ingredientes; track ingrediente.id) {
+      <button type="button" (click)="agregar(ingrediente)" [disabled]="terminado()">
+        <span class="simbolo">{{ ingrediente.simbolo }}</span>
+        {{ ingrediente.nombre }}
+      </button>
+    }
+  </div>
+
+  @if (terminado()) {
+    <div class="fin">
+      <h3>¡Se acabó el tiempo!</h3>
+      <p>Puntaje final: {{ puntaje() }}</p>
+      <p>Pizzas completadas: {{ pizzasCompletadas() }}</p>
+
+      @if (estadoGuardado() === 'guardando') {
+        <p>Guardando partida...</p>
+      }
+      @if (estadoGuardado() === 'guardado') {
+        <p class="exito">Partida guardada</p>
+      }
+      @if (estadoGuardado() === 'error') {
+        <p class="error">{{ mensajeErrorGuardado() }}</p>
+        <button type="button" (click)="guardarPartida()">Reintentar guardado</button>
+        <button type="button" (click)="salirSinGuardar()">Salir sin guardar</button>
+      }
+
+      <button type="button" (click)="iniciarPartida()">Jugar de nuevo</button>
+      <button type="button" (click)="salir()">Volver al catálogo</button>
+    </div>
+  }
+</div>
