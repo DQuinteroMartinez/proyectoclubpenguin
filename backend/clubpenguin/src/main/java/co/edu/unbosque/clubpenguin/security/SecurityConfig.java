@@ -95,7 +95,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuracion = new CorsConfiguration();
-		configuracion.setAllowedOrigins(List.of("http://localhost:4200"));
+		configuracion.setAllowedOrigins(List.of("https://proyectoclubpenguin.netlify.app"));
 		configuracion.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		configuracion.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 		configuracion.setExposedHeaders(List.of("Content-Disposition"));
