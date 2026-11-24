@@ -1,0 +1,43 @@
+<h2>Atrapabolsas</h2>
+<p class ="marcador">Puntaje : {{ puntaje() }} | Tiempo: {{ tiempoRestante() }} s</p>
+
+<div class="acciones">
+  <button type="button" class="btn btn-outline-danger btn-sm" (click)="salir()">Salir y guardar</button>
+</div>
+
+<div class="escenario" [style.width.px]="anchoEscenario" [style.height.px]="altoEscenario">
+
+  @for (bolsa of bolsas(); track bolsa.id) {
+    <div class="bolsa" [style.left.px]="bolsa.x" [style.top.px]="bolsa.y"
+         [style.width.px]="tamanoBolsa" [style.height.px]="tamanoBolsa">
+      🛍️
+    </div>
+  }
+
+  <div class="canasta" [style.left.px]="x()" [style.width.px]="anchoCanasta"
+       [style.height.px]="altoCanasta">
+    🧺
+  </div>
+
+  @if (terminado()){
+    <div class="fin">
+      <h3>¡Tiempo terminado!</h3>
+      <p>Puntaje final: {{ puntaje() }}</p>
+      <button type="button" (click)="iniciarPartida()">Jugar de nuevo</button>
+
+      @if (estadoGuardado() === 'guardando') {
+        <p>Guardando partida...</p>
+      }
+      @if (estadoGuardado() === 'guardado') {
+        <p class="exito">Partida guardada</p>
+      }
+      @if (estadoGuardado() === 'error') {
+        <p class="error">{{ mensajeErrorGuardado() }}</p>
+        <button type="button" (click)="guardarPartida()">Reintentar guardado</button>
+        <button type="button" (click)="salirSinGuardar()">Salir sin guardar</button>
+      }
+      <button type="button" (click)="salir()">Volver al catálogo</button>
+    </div>
+  }
+
+</div>

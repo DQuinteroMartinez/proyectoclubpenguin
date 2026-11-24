@@ -1,0 +1,52 @@
+<h2>Mapa</h2>
+<p class="ayuda">Muévete con las flechas (o WASD). Acércate a un edificio y pulsa Enter, o haz clic en él.</p>
+
+<div class="escenario" [style.width.px]="anchoEscenario" [style.height.px]="altoEscenario">
+
+  <div class="cielo"></div>
+  <div class="montanas">🏔️ 🏔️ 🏔️ 🏔️ 🏔️</div>
+
+  <span class="decoracion" style="left: 230px; top: 190px">🌲</span>
+  <span class="decoracion" style="left: 540px; top: 200px">🌲</span>
+  <span class="decoracion" style="left: 190px; top: 300px">⛄</span>
+  <span class="decoracion" style="left: 590px; top: 290px">🌲</span>
+  <span class="decoracion" style="left: 120px; top: 220px">❄️</span>
+  <span class="decoracion" style="left: 700px; top: 240px">❄️</span>
+  <span class="decoracion" style="left: 280px; top: 330px">🐟</span>
+
+  @for (zona of zonas; track zona.nombre) {
+    <button
+      type="button"
+      class="zona"
+      [class.cerca]="zonaCercana() === zona"
+      [style.left.px]="zona.x"
+      [style.top.px]="zona.y"
+      [style.width.px]="zona.ancho"
+      [style.height.px]="zona.alto"
+      [style.background]="zona.color"
+      (click)="entrar(zona)"
+    >
+      <span class="zona-emoji">{{ zona.emoji }}</span>
+      <span class="zona-nombre">{{ zona.nombre }}</span>
+    </button>
+  }
+
+  <div
+    class="pinguino"
+    [class.admin]="esAdmin()"
+    [class.izquierda]="mirandoIzquierda()"
+    [style.left.px]="x()"
+    [style.top.px]="y()"
+    [style.width.px]="tamanoPinguino"
+    [style.height.px]="tamanoPinguino"
+  >
+    @if (esAdmin()) {
+      <span class="corona">👑</span>
+    }
+    <span class="cuerpo">🐧</span>
+  </div>
+
+  @if (zonaCercana(); as zona) {
+    <div class="aviso">Pulsa Enter para entrar a {{ zona.nombre }}</div>
+  }
+</div>

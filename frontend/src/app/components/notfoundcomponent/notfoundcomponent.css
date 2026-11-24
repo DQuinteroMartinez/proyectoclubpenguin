@@ -1,0 +1,11 @@
+.no-encontrada {
+  text-align: center;
+  padding: 60px 16px;
+}
+
+.codigo {
+  font-size: 72px;
+  font-weight: bold;
+  color: #2b6c8f;
+  margin: 0;
+}

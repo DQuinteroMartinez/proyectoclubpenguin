@@ -1,0 +1,25 @@
+section {
+  margin: 24px auto;
+  max-width: 1000px;
+}
+
+form div {
+  margin: 10px 0;
+}
+
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #2b6c8f;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background: #2b6c8f;
+  color: white;
+}

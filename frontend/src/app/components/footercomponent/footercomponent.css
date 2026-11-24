@@ -1,0 +1,11 @@
+footer {
+  font-size: 0.9rem;
+  /* Bootstrap fuerza el fondo de bg-dark, por eso se usa !important para diferenciar el pie de página. */
+  background: linear-gradient(90deg, #06214d, #0b3d91) !important;
+  border-top: 4px solid #7cc4ff;
+  box-shadow: 0 -6px 18px rgba(11, 42, 91, 0.35);
+}
+
+footer span {
+  color: rgba(255, 255, 255, 0.92);
+}

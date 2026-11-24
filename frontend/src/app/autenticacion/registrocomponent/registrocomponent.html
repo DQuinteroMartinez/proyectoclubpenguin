@@ -1,0 +1,59 @@
+<h2>Crear cuenta</h2>
+
+<form [formGroup]="formulario" (ngSubmit)="registrarse()">
+  <div>
+    <label for="nombreUsuario">Usuario</label>
+    <input id="nombreUsuario" type="text" formControlName="nombreUsuario" />
+    @if (formulario.get('nombreUsuario')?.touched && formulario.get('nombreUsuario')?.errors; as errores) {
+      @if (errores['required']) {
+        <p class="error">El usuario es obligatorio</p>
+      } @else if (errores['minlength'] || errores['maxlength']) {
+        <p class="error">El usuario debe tener entre 3 y 20 caracteres</p>
+      }
+    }
+    @if (erroresServidor()['nombreUsuario']) {
+      <p class="error">{{ erroresServidor()['nombreUsuario'] }}</p>
+    }
+  </div>
+
+  <div>
+    <label for="correo">Correo</label>
+    <input id="correo" type="email" formControlName="correo" />
+    @if (formulario.get('correo')?.touched && formulario.get('correo')?.errors; as errores) {
+      @if (errores['required']) {
+        <p class="error">El correo es obligatorio</p>
+      } @else if (errores['email'] || errores['pattern']) {
+        <p class="error">El correo no es válido. Debe tener la forma nombre@dominio.com</p>
+      }
+    }
+    @if (erroresServidor()['correo']) {
+      <p class="error">{{ erroresServidor()['correo'] }}</p>
+    }
+  </div>
+
+  <div>
+    <label for="contrasena">Contraseña</label>
+    <input id="contrasena" type="password" formControlName="contrasena" />
+    @if (formulario.get('contrasena')?.touched && formulario.get('contrasena')?.errors; as errores) {
+      @if (errores['required']) {
+        <p class="error">La contraseña es obligatoria</p>
+      } @else if (errores['minlength']) {
+        <p class="error">La contraseña debe tener al menos 6 caracteres</p>
+      }
+    }
+    @if (erroresServidor()['contrasena']) {
+      <p class="error">{{ erroresServidor()['contrasena'] }}</p>
+    }
+  </div>
+  <button type="submit" [disabled]="cargando()">Registrarse</button>
+
+</form>
+
+@if (mensajeError()) {
+  <p class="error">{{ mensajeError() }}</p>
+}
+@if (mensajeExito()) {
+  <p class="exito">{{ mensajeExito() }} <a routerLink="/login">Ir a iniciar sesión</a></p>
+}
+
+<p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>

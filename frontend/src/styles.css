@@ -1,0 +1,135 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Fondo de toda la aplicación: se mantiene fijo mientras el jugador navega o hace scroll. */
+body {
+  background: #bfe6ff url('/fondo.svg') center / cover no-repeat fixed;
+  min-height: 100vh;
+}
+
+/* Nieve cayendo sobre todo el fondo (no se puede clicar a través de ella). */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(3px 3px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 90px 120px, #fff, transparent),
+    radial-gradient(3px 3px at 160px 60px, #fff, transparent),
+    radial-gradient(2px 2px at 220px 180px, #fff, transparent),
+    radial-gradient(3px 3px at 300px 90px, #fff, transparent);
+  background-size: 320px 220px;
+  opacity: 0.8;
+  animation: nevar 14s linear infinite;
+}
+
+@keyframes nevar {
+  from { background-position: 0 0; }
+  to { background-position: 60px 220px; }
+}
+
+/* El contenido va por encima de la nieve. */
+app-root {
+  position: relative;
+  z-index: 1;
+}
+
+/* Barra superior con degradado en azul hielo. */
+.navbar.bg-primary {
+  background: linear-gradient(90deg, #0b3d91, #1c7ed6) !important;
+  box-shadow: 0 2px 10px rgba(11, 61, 145, 0.35);
+}
+
+/* El contenido principal se ve sobre un panel claro para que el texto se lea bien. */
+main.container {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(11, 42, 91, 0.25);
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+/* En login y registro el panel lo pone la propia tarjeta del formulario. */
+main.container:has(app-logincomponent),
+main.container:has(app-registrocomponent) {
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
+  }
+}
+
+/* Botones normales de la aplicación (juegos, retos, administración...). Los botones de Bootstrap
+   (.btn) y los edificios del mapa (.zona) conservan su propio estilo. Con :where() estas reglas
+   tienen la prioridad más baja y no pisan los estilos de cada componente. */
+:where(main button:not(.btn):not(.zona)) {
+  padding: 8px 18px;
+  margin: 4px 6px 4px 0;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #1c7ed6, #0b3d91);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+
+:where(main button:not(.btn):not(.zona):hover:not(:disabled)) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(11, 61, 145, 0.35);
+}
+
+:where(main button:not(.btn):not(.zona):disabled) {
+  filter: grayscale(0.7);
+  cursor: not-allowed;
+}
+
+/* Campos de formulario y tablas de las demás pantallas. */
+:where(main select, main input:not([type='checkbox'])) {
+  padding: 8px 12px;
+  border: 2px solid #c4dff2;
+  border-radius: 10px;
+  background: #f5fbff;
+}
+
+:where(main select:focus, main input:focus) {
+  outline: none;
+  border-color: #1c7ed6;
+  box-shadow: 0 0 0 3px rgba(28, 126, 214, 0.2);
+}
+
+:where(main table) {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+:where(main th) {
+  padding: 10px;
+  background: #0b3d91;
+  color: #fff;
+  text-align: left;
+}
+
+:where(main td) {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e3eef7;
+}
+
+:where(main tbody tr:hover) {
+  background: #eef7ff;
+}
+
+:where(main .error) {
+  color: #c92a2a;
+}
+
+:where(main .exito) {
+  color: #2b8a3e;
+}

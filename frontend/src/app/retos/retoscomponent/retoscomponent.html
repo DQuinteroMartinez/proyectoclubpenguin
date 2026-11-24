@@ -1,0 +1,97 @@
+<h2>Retos</h2>
+
+<section>
+  <h3>Retar a un jugador</h3>
+
+  @if (mensajeErrorOpciones()) {
+    <p class="error">{{ mensajeErrorOpciones() }}</p>
+  }
+
+  <form [formGroup]="formulario" (ngSubmit)="enviarReto()">
+    <div>
+      <label for="nombreUsuarioRetado">Jugador</label>
+      <select id="nombreUsuarioRetado" formControlName="nombreUsuarioRetado">
+        <option value="">Elige un jugador</option>
+        @for (rival of rivales(); track rival.id) {
+          <option [value]="rival.nombreUsuario">{{ rival.nombreUsuario }}</option>
+        }
+      </select>
+      @if (rivales().length === 0 && !mensajeErrorOpciones()) {
+        <p class="error">No hay otros jugadores registrados todavía. Crea otra cuenta para poder retar a alguien.</p>
+      }
+      @if (formulario.get('nombreUsuarioRetado')?.touched && formulario.get('nombreUsuarioRetado')?.invalid) {
+        <p class="error">Elige a quién quieres retar</p>
+      }
+    </div>
+
+    <div>
+      <label for="minijuegoId">Minijuego</label>
+      <select id="minijuegoId" formControlName="minijuegoId">
+        <option value="">Elige un minijuego</option>
+        @for (minijuego of minijuegos(); track minijuego.id) {
+          <option [value]="minijuego.id">{{ minijuego.nombre }}</option>
+        }
+      </select>
+      @if (formulario.get('minijuegoId')?.touched && formulario.get('minijuegoId')?.invalid) {
+        <p class="error">Elige un minijuego</p>
+      }
+    </div>
+
+    <p class="ayuda">Para retar en un minijuego, primero debes haberlo jugado: el reto usa tu mejor puntaje.</p>
+
+    <button type="submit" [disabled]="enviando()">Enviar reto</button>
+  </form>
+
+  @if (mensajeErrorEnvio()) {
+    <p class="error">{{ mensajeErrorEnvio() }}</p>
+  }
+  @if (mensajeExito()) {
+    <p class="exito">{{ mensajeExito() }}</p>
+  }
+</section>
+
+<section>
+  <h3>Mis retos</h3>
+  <button type="button" (click)="cargarRetos()" [disabled]="cargandoRetos()">Actualizar</button>
+
+  @if (cargandoRetos()) {
+    <p>Cargando retos...</p>
+  } @else if (mensajeErrorRetos()) {
+    <p class="error">{{ mensajeErrorRetos() }}</p>
+  } @else if (retos().length === 0) {
+    <p>Todavía no tienes retos.</p>
+  } @else {
+    <table>
+      <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Retador</th>
+        <th>Retado</th>
+        <th>Minijuego</th>
+        <th>Puntaje a superar</th>
+        <th>Puntaje del retado</th>
+        <th>Estado</th>
+        <th>Creado</th>
+        <th>Resuelto</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (reto of retos(); track reto.id) {
+          <tr>
+            <td>{{ esLanzado(reto) ? 'Lanzado' : 'Recibido' }}</td>
+            <td>{{ reto.retador }}</td>
+            <td>{{ reto.retado }}</td>
+            <td>{{ reto.minijuego }}</td>
+            <td>{{ reto.puntajeObjetivo }}</td>
+            <td>{{ reto.puntajeRetado ?? '—' }}</td>
+            <td>{{ etiquetasEstado[reto.estado] }}</td>
+            <td>{{ reto.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              {{ reto.fechaResolucion ? (reto.fechaResolucion | date: 'dd/MM/yyyy HH:mm') : '—' }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
